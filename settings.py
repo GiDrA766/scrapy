@@ -64,6 +64,7 @@ DOWNLOAD_DELAY = 1
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "anime.pipelines.AnimePipeline": 300,
+   "anime.pipelines.DatabaseAdapter": 301,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

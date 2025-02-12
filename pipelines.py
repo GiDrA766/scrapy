@@ -9,8 +9,7 @@ from time import sleep
 from itemadapter import ItemAdapter
 import re
 from datetime import datetime
-# from .db_connection.db_helper import db_helper
-# from .db_connection.models import BASE
+from .db_connection import db_helper, Anime
 
 class AnimePipeline:
     def process_item(self, item, spider):
@@ -21,15 +20,15 @@ class AnimePipeline:
                 sleep(1)
                 adapter[field_name] = re.sub(r" \[\d.*", "", adapter[field_name])
         adapter['date_of_production'] = re.sub(r"^c\s*", "", adapter['date_of_production']) 
-        adapter['date_of_production'] = datetime.strptime(adapter["date_of_production"], "%d.%m.%Y").date()   
+        adapter['date_of_production'] = datetime.strptime(adapter["date_of_production"], "%d.%m.%Y").date()  
+        adapter["age_rating"] =  re.search(r"\((.*?)\)", adapter['age_rating']).group(1)
         return item
     
-# class DatabaseAdapter:
-    
-#     def process_item(self, item, spider):
-#         # Insert item into the database
-#         BASE.metadata.create_all(db_helper.engine)
-    
-#         with db_helper.session() as session:
-#             session.add(item)
-#             session.commit()
+class DatabaseAdapter:
+    def process_item(self, item, spider):
+        # Insert item into the database    
+        with db_helper.session() as session:  # Using a context manager to ensure the session is closed automatically
+            anime = Anime(**item)
+            session.add(anime)
+            session.commit()
+        return item

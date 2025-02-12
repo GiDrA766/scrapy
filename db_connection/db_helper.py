@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
-from .settings import settings
 from sqlalchemy.orm import sessionmaker
-
+from contextlib import contextmanager
+from .settings import settings
 
 class DB_HELPER:
     def __init__(self):
@@ -10,10 +10,13 @@ class DB_HELPER:
     def session_maker(self):
         Session = sessionmaker(bind=self.engine)
         return Session()
+
+    @contextmanager
     def session(self):
-        with self.session_maker() as session:
-            yield session
+        session = self.session_maker()
+        try:
+            yield session  # Yielding the session, so it can be used within the 'with' block
+        finally:
             session.close()
-            
 
 db_helper = DB_HELPER()

@@ -1,13 +1,15 @@
 from time import sleep
 import scrapy
-
+from ..db_connection import Base, db_helper
 from ..items import AnimeItem
 
 class AnimejoySpider(scrapy.Spider):
+    
     name = "animejoy"
     allowed_domains = ["animejoy.ru"]
     start_urls = ["https://animejoy.ru/"]
     def parse(self, response):
+        Base.metadata.create_all(db_helper.engine)
         items = response.xpath("//div[@id = 'dle-content']//article")[1:]
         for item in items:
             url = item.css("a::attr(href)").get()
@@ -19,7 +21,6 @@ class AnimejoySpider(scrapy.Spider):
     
     
     def parse_page(self, response):
-        
         anime = AnimeItem()
         desc = response.css("div.blkdesc p")
         # listofgenres = desc[1].css("span")[1:]
