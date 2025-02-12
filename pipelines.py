@@ -8,6 +8,7 @@
 from time import sleep
 from itemadapter import ItemAdapter
 import re
+from datetime import datetime
 # from .db_connection.db_helper import db_helper
 # from .db_connection.models import BASE
 
@@ -19,7 +20,8 @@ class AnimePipeline:
             if field_name == "name":
                 sleep(1)
                 adapter[field_name] = re.sub(r" \[\d.*", "", adapter[field_name])
-        adapter['date_of_production'] = re.sub(r"^c\s*", "", adapter['date_of_production'])    
+        adapter['date_of_production'] = re.sub(r"^c\s*", "", adapter['date_of_production']) 
+        adapter['date_of_production'] = datetime.strptime(adapter["date_of_production"], "%d.%m.%Y").date()   
         return item
     
 # class DatabaseAdapter:
