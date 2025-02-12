@@ -14,6 +14,7 @@ class BookstorescrapingItem(scrapy.Item):
 class AnimeItem(scrapy.Item):
     name = scrapy.Field()
     season = scrapy.Field()
+    year = scrapy.Field()
     genres = scrapy.Field()
     country = scrapy.Field()
     date_of_production = scrapy.Field()

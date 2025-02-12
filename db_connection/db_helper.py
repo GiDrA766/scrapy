@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from settings import settings
+from .settings import settings
 from sqlalchemy.orm import sessionmaker
 
 

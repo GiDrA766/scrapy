@@ -13,6 +13,7 @@ class Anime(BASE):
     
     name: Mapped[str] = mapped_column(String)
     season: Mapped[str] = mapped_column(String)
+    year: Mapped[int] = mapped_column(Integer)
     genres: Mapped[str] = mapped_column(ARRAY(String))
     country: Mapped[str] = mapped_column(String)
     date_of_production: Mapped[str] = mapped_column(Date)

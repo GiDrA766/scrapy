@@ -8,8 +8,8 @@
 from time import sleep
 from itemadapter import ItemAdapter
 import re
-from .db_connection.db_helper import db_helper
-from .db_connection.models import BASE
+# from .db_connection.db_helper import db_helper
+# from .db_connection.models import BASE
 
 class AnimePipeline:
     def process_item(self, item, spider):
@@ -19,14 +19,15 @@ class AnimePipeline:
             if field_name == "name":
                 sleep(1)
                 adapter[field_name] = re.sub(r" \[\d.*", "", adapter[field_name])
+        adapter['date_of_production'] = re.sub(r"^c\s*", "", adapter['date_of_production'])    
         return item
     
-class DatabaseAdapter:
+# class DatabaseAdapter:
     
-    def process_item(self, item, spider):
-        # Insert item into the database
-        BASE.metadata.create_all(db_helper.engine)
+#     def process_item(self, item, spider):
+#         # Insert item into the database
+#         BASE.metadata.create_all(db_helper.engine)
     
-        with db_helper.session() as session:
-            session.add(item)
-            session.commit()
+#         with db_helper.session() as session:
+#             session.add(item)
+#             session.commit()
